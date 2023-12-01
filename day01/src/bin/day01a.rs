@@ -39,7 +39,7 @@ fn process(bufin: impl BufRead) -> Result<u32> {
 
 #[test]
 fn test() -> Result<()> {
-    assert_eq!(process(EXAMPLE.as_bytes())?, 142);
+    assert_eq!(process(EXAMPLE1.as_bytes())?, 142);
     Ok(())
 }
 

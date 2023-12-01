@@ -4,10 +4,19 @@
 
 pub use color_eyre::{eyre::eyre, Result};
 
-pub const EXAMPLE: &str = "1abc2
+pub const EXAMPLE1: &str = "1abc2
 pqr3stu8vwx
 a1b2c3d4e5f
 treb7uchet
+";
+
+pub const EXAMPLE2: &str = "two1nine
+eightwothree
+abcone2threexyz
+xtwone3four
+4nineeightseven2
+zoneight234
+7pqrstsixteen
 ";
 
 pub mod parser {
@@ -28,6 +37,7 @@ pub mod parser {
 
 #[test]
 fn test() -> Result<()> {
-    assert_eq!(parser::parse(EXAMPLE.as_bytes())?.len(), 4);
+    assert_eq!(parser::parse(EXAMPLE1.as_bytes())?.len(), 4);
+    assert_eq!(parser::parse(EXAMPLE2.as_bytes())?.len(), 7);
     Ok(())
 }
