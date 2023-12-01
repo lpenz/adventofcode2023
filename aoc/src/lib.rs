@@ -2,6 +2,7 @@
 pub mod parser {
     pub use color_eyre::eyre::eyre;
     pub use color_eyre::Result;
+    pub use combinator::all_consuming;
     pub use nom::branch;
     pub use nom::bytes::complete as bytes;
     pub use nom::character::complete as character;
@@ -16,7 +17,7 @@ pub mod parser {
         ($parser:expr, $buf:ident) => {{
             let mut input = String::default();
             $buf.read_to_string(&mut input)?;
-            let result = combinator::all_consuming($parser)(&input).finish();
+            let result = all_consuming($parser)(&input).finish();
             Ok(result.map_err(|e| eyre!("error reading input: {:?}", e))?.1)
         }};
     }
