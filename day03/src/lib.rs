@@ -17,7 +17,7 @@ pub const EXAMPLE: &str = "467..114..
 .664.598..
 ";
 
-#[derive(Debug, Default, Clone, Copy)]
+#[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 pub enum Cell {
     #[default]
     Empty,
@@ -43,6 +43,44 @@ impl fmt::Display for Cell {
             Cell::Symbol(c) => write!(f, "{}", c),
         }
     }
+}
+
+pub use sqrid::Qr;
+pub type Sqrid = sqrid::sqrid_create!(140, 140, true);
+pub type Qa = sqrid::qa_create!(Sqrid);
+pub type Grid = sqrid::grid_create!(Sqrid, Cell);
+
+pub fn grid_get_number(grid: &mut Grid, qa_digit: Qa) -> Result<u32> {
+    if !matches!(grid[qa_digit], Cell::Digit(_)) {
+        return Err(eyre!(
+            "cell {:?} with {} doesn't have a digit",
+            qa_digit,
+            grid[qa_digit]
+        ));
+    }
+    // Found a digit, go left:
+    let mut qa_start = qa_digit;
+    while let Ok(qa) = qa_start + Qr::W {
+        if !matches!(grid[qa], Cell::Digit(_)) {
+            break;
+        }
+        qa_start = qa;
+    }
+    // We are at the start of the number, pick up the digits
+    let mut number_str = format!("{}", grid[qa_start].digit()?);
+    let mut qa_digit = qa_start;
+    grid[qa_digit] = Cell::Empty;
+    while let Ok(qa) = qa_digit + Qr::E {
+        if !matches!(grid[qa], Cell::Digit(_)) {
+            break;
+        }
+        number_str.push(grid[qa].digit()?);
+        grid[qa] = Cell::Empty;
+        qa_digit = qa;
+    }
+    number_str
+        .parse::<u32>()
+        .map_err(|_| eyre!("invalid number {}", number_str))
 }
 
 pub mod parser {
