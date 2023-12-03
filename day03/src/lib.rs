@@ -59,24 +59,23 @@ pub fn grid_get_number(grid: &mut Grid, qa_digit: Qa) -> Result<u32> {
         ));
     }
     // Found a digit, go left:
-    let mut qa_start = qa_digit;
-    while let Ok(qa) = qa_start + Qr::W {
-        if !matches!(grid[qa], Cell::Digit(_)) {
-            break;
-        }
-        qa_start = qa;
-    }
+    let qa_start = std::iter::successors(Some(qa_digit), |qa| {
+        (*qa + Qr::W)
+            .ok()
+            .filter(|qa| matches!(grid[qa], Cell::Digit(_)))
+    })
+    .last()
+    .ok_or_else(|| eyre!("could not find first digit from {:?}", qa_digit))?;
     // We are at the start of the number, pick up the digits
-    let mut number_str = format!("{}", grid[qa_start].digit()?);
-    let mut qa_digit = qa_start;
-    grid[qa_digit] = Cell::Empty;
-    while let Ok(qa) = qa_digit + Qr::E {
-        if !matches!(grid[qa], Cell::Digit(_)) {
+    let number_str = Qa::iter_range(qa_start, Qa::BOTTOM_RIGHT)
+        .map_while(|qa| grid[qa].digit().ok())
+        .collect::<String>();
+    // Empty the used cells:
+    for qa in Qa::iter_range(qa_start, Qa::BOTTOM_RIGHT) {
+        if grid[qa].digit().is_err() {
             break;
         }
-        number_str.push(grid[qa].digit()?);
         grid[qa] = Cell::Empty;
-        qa_digit = qa;
     }
     number_str
         .parse::<u32>()
