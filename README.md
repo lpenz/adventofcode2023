@@ -1,4 +1,4 @@
-![AoC](https://img.shields.io/badge/AoC%20%E2%AD%90-8-yellow)
+![AoC](https://img.shields.io/badge/AoC%20%E2%AD%90-10-yellow)
 [![CI](https://github.com/lpenz/adventofcode2023/workflows/CI/badge.svg)](https://github.com/lpenz/adventofcode2023/actions)
 [![coveralls](https://coveralls.io/repos/github/lpenz/adventofcode2023/badge.svg?branch=main)](https://coveralls.io/github/lpenz/adventofcode2023?branch=main)
 
@@ -11,6 +11,8 @@ Code for the 2023 puzzles at https://adventofcode.com/2023/
 
 Some interesting things that happened on specific days:
 
+- Day 05b: used `Range{ ini, end }` to represent sets of numbers
+  (which was not necessary).
 
 
 <table><tr>

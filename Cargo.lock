@@ -185,6 +185,7 @@ dependencies = [
  "aoc",
  "color-eyre",
  "nom",
+ "rayon",
 ]
 
 [[package]]
