@@ -3,6 +3,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 pub use color_eyre::{eyre::eyre, Result};
+use rayon::prelude::*;
 
 pub const EXAMPLE: &str = "0 3 6 9 12 15
 1 3 6 10 15 21
@@ -23,6 +24,10 @@ pub mod parser {
     pub fn parse(mut bufin: impl BufRead) -> Result<Vec<Vec<i64>>> {
         aoc::parse_with!(multi::many1(line), bufin)
     }
+}
+
+pub fn diffs(nums: &[i64]) -> Vec<i64> {
+    nums.par_windows(2).map(|l| l[1] - l[0]).collect()
 }
 
 #[test]
