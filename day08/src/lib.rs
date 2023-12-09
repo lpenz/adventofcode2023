@@ -23,6 +23,18 @@ BBB = (AAA, ZZZ)
 ZZZ = (ZZZ, ZZZ)
 ";
 
+pub const EXAMPLE3: &str = "LR
+
+11A = (11B, XXX)
+11B = (XXX, 11Z)
+11Z = (11B, XXX)
+22A = (22B, XXX)
+22B = (22C, 22C)
+22C = (22Z, 22Z)
+22Z = (22B, 22B)
+XXX = (XXX, XXX)
+";
+
 #[derive(Debug, Hash, PartialEq, Eq, Clone, Copy)]
 pub struct Node(pub [char; 3]);
 
@@ -32,6 +44,10 @@ impl Node {
             Instr::L => opts.0,
             Instr::R => opts.1,
         }
+    }
+
+    pub fn last_letter(&self) -> char {
+        self.0[2]
     }
 }
 
@@ -82,7 +98,7 @@ pub mod parser {
     }
 
     fn node(input: &str) -> IResult<&str, Node> {
-        let (input, name) = multi::count(character::satisfy(|c| c.is_ascii_uppercase()), 3)(input)?;
+        let (input, name) = multi::count(character::satisfy(|c| c.is_ascii()), 3)(input)?;
         Ok((input, Node::try_from(name.as_ref()).unwrap()))
     }
 
@@ -115,5 +131,7 @@ fn test() -> Result<()> {
     assert_eq!(parser::parse(EXAMPLE1.as_bytes())?.1.len(), 7);
     assert_eq!(parser::parse(EXAMPLE2.as_bytes())?.0.len(), 3);
     assert_eq!(parser::parse(EXAMPLE2.as_bytes())?.1.len(), 3);
+    assert_eq!(parser::parse(EXAMPLE3.as_bytes())?.0.len(), 2);
+    assert_eq!(parser::parse(EXAMPLE3.as_bytes())?.1.len(), 8);
     Ok(())
 }
