@@ -5,6 +5,7 @@
 pub use color_eyre::{eyre::eyre, Report, Result};
 use itertools::Itertools;
 use std::collections::BTreeMap;
+use std::fmt;
 use std::str::FromStr;
 
 pub const EXAMPLE: &str = "32T3K 765
@@ -14,23 +15,35 @@ KTJJT 220
 QQQJA 483
 ";
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct Card(pub char);
 
-impl From<&Card> for i64 {
-    fn from(value: &Card) -> i64 {
-        match value {
-            Card('A') => 12,
-            Card('K') => 11,
-            Card('Q') => 10,
-            Card('J') => 9,
-            Card('T') => 8,
-            Card(n) => n.to_digit(10).expect("invalid card") as i64 - 2,
+impl Card {
+    pub fn value(&self, joker: bool) -> i64 {
+        match self {
+            Card('A') => 13,
+            Card('K') => 12,
+            Card('Q') => 11,
+            Card('J') => {
+                if joker {
+                    0
+                } else {
+                    10
+                }
+            }
+            Card('T') => 9,
+            Card(n) => n.to_digit(10).expect("invalid card") as i64 - 1,
         }
     }
 }
 
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
+impl fmt::Display for Card {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 pub enum Type {
     Highest = 0,
     OnePair,
@@ -41,6 +54,7 @@ pub enum Type {
     FiveOfKind,
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
 pub struct Hand(pub [Card; 5]);
 
 impl Hand {
@@ -76,18 +90,48 @@ impl Hand {
         }
     }
 
-    pub fn value(&self) -> i64 {
-        self.htype() as i64 * 13_i64.pow(6) + i64::from(self)
+    pub fn iter_jokers(&self) -> impl Iterator<Item = Hand> + '_ {
+        std::iter::once(*self)
+            .chain(
+                self.0
+                    .iter()
+                    .filter(|&c| c != &Card('J'))
+                    .unique()
+                    .map(|c| {
+                        let mut hand = *self;
+                        for pos in hand.0.iter_mut() {
+                            if *pos == Card('J') {
+                                *pos = *c;
+                            }
+                        }
+                        hand
+                    }),
+            )
+            .unique()
     }
-}
 
-impl From<&Hand> for i64 {
-    fn from(hand: &Hand) -> i64 {
-        hand.0
+    pub fn best_type(&self) -> Type {
+        self.iter_jokers()
+            .map(|hand| hand.htype())
+            .max_by_key(|&t| t as i64)
+            .unwrap()
+    }
+
+    pub fn value(&self, joker: bool) -> i64 {
+        let cards_value = self.cards_value(joker);
+        if joker {
+            self.best_type() as i64 * 14_i64.pow(6) + cards_value
+        } else {
+            self.htype() as i64 * 14_i64.pow(6) + cards_value
+        }
+    }
+
+    pub fn cards_value(&self, joker: bool) -> i64 {
+        self.0
             .iter()
             .rev()
             .enumerate()
-            .map(|(i, c)| i64::from(c) * 13_i64.pow(i as u32))
+            .map(|(i, c)| c.value(joker) * 14_i64.pow(i as u32))
             .sum()
     }
 }
@@ -108,6 +152,32 @@ impl FromStr for Hand {
         let cards = s.chars().map(Card).collect::<Vec<_>>();
         Hand::try_from(cards.as_ref())
     }
+}
+
+impl fmt::Display for Hand {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        for c in self.0 {
+            write!(f, "{}", c)?;
+        }
+        Ok(())
+    }
+}
+
+#[test]
+fn test_iter_jokers() -> Result<()> {
+    assert_eq!(
+        Hand::from_str("AAAAA")?.iter_jokers().collect::<Vec<_>>(),
+        vec![Hand::from_str("AAAAA")?]
+    );
+    assert_eq!(
+        Hand::from_str("JAAAA")?.iter_jokers().collect::<Vec<_>>(),
+        vec![Hand::from_str("JAAAA")?, Hand::from_str("AAAAA")?,]
+    );
+    assert_eq!(
+        Hand::from_str("JJAAA")?.iter_jokers().collect::<Vec<_>>(),
+        vec![Hand::from_str("JJAAA")?, Hand::from_str("AAAAA")?,]
+    );
+    Ok(())
 }
 
 #[test]

@@ -11,7 +11,7 @@ fn process(bufin: impl BufRead) -> Result<i64> {
     let input = parser::parse(bufin)?;
     Ok(input
         .into_iter()
-        .map(|(hand, bid)| (hand.value(false), bid))
+        .map(|(hand, bid)| (hand.value(true), bid))
         .sorted()
         .enumerate()
         .map(|(i, (_hand, bid))| (i as i64 + 1) * bid)
@@ -20,7 +20,7 @@ fn process(bufin: impl BufRead) -> Result<i64> {
 
 #[test]
 fn test() -> Result<()> {
-    assert_eq!(process(EXAMPLE.as_bytes())?, 6440);
+    assert_eq!(process(EXAMPLE.as_bytes())?, 5905);
     Ok(())
 }
 
