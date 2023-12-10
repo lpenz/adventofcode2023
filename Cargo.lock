@@ -234,6 +234,7 @@ version = "0.1.0"
 dependencies = [
  "aoc",
  "color-eyre",
+ "itertools",
  "nom",
  "sqrid",
 ]
