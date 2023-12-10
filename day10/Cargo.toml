@@ -1,0 +1,10 @@
+[package]
+name = "day10"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+aoc = { path = "../aoc" }
+color-eyre = "0.6.2"
+nom = "7.1.3"
+sqrid = "0.0.18"
