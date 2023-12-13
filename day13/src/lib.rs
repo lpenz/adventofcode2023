@@ -3,6 +3,7 @@
 // file 'LICENSE', which is part of this source code package.
 
 pub use color_eyre::{eyre::eyre, Result};
+use std::collections::HashSet;
 
 pub const EXAMPLE: &str = "#.##..##.
 ..#.##.#.
@@ -21,6 +22,7 @@ pub const EXAMPLE: &str = "#.##..##.
 #....#..#
 ";
 
+pub type Xy = (usize, usize);
 pub type VecGrid = Vec<Vec<bool>>;
 
 pub mod parser {
@@ -58,4 +60,65 @@ fn test() -> Result<()> {
     assert_eq!(input[1].len(), 7);
     assert_eq!(input[1][1].len(), 9);
     Ok(())
+}
+
+pub fn vecgrid2hashset(vecgrid: &VecGrid) -> (HashSet<Xy>, Xy) {
+    let size = (vecgrid[0].len(), vecgrid.len());
+    (
+        (0..size.1)
+            .flat_map(|y| (0..size.0).filter_map(move |x| vecgrid[y][x].then_some((x, y))))
+            .collect::<HashSet<Xy>>(),
+        size,
+    )
+}
+
+pub fn translate(g: &HashSet<Xy>) -> HashSet<Xy> {
+    g.iter().map(|(x, y)| (*y, *x)).collect()
+}
+
+fn gridmatch(mirror: usize, size: &Xy, g: &HashSet<Xy>) -> bool {
+    let xmin = if 2 * mirror >= size.0 + 1 {
+        2 * mirror - size.0 + 2
+    } else {
+        0
+    };
+    for x in xmin..(mirror + 1) {
+        let xmirror = 2 * mirror + 1 - x;
+        if xmirror >= size.0 {
+            continue;
+        }
+        for y in 0..size.1 {
+            if g.contains(&(x, y)) != g.contains(&(xmirror, y)) {
+                return false;
+            }
+        }
+    }
+    true
+}
+
+pub fn find_mirror_summary(grid: &HashSet<Xy>, size: &Xy, old: Option<usize>) -> Option<usize> {
+    let (gridy, sizey) = (translate(grid), (size.1, size.0));
+    let max = std::cmp::max(size.0, size.1);
+    for mirror in (0..max - 1).rev() {
+        if mirror < size.0 - 1 && Some(mirror + 1) != old && gridmatch(mirror, size, grid) {
+            return Some(mirror + 1);
+        }
+        if mirror < size.1 - 1
+            && Some(100 * (mirror + 1)) != old
+            && gridmatch(mirror, &sizey, &gridy)
+        {
+            return Some(100 * (mirror + 1));
+        }
+    }
+    None
+}
+
+pub fn print_grid(grid: &HashSet<Xy>, size: Xy) {
+    for y in 0..size.1 {
+        for x in 0..size.0 {
+            let xy = (x, y);
+            eprint!("{}", if grid.contains(&xy) { '#' } else { '.' });
+        }
+        eprintln!();
+    }
 }
