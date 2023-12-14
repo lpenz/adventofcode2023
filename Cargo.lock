@@ -166,7 +166,7 @@ dependencies = [
  "aoc",
  "color-eyre",
  "nom",
- "sqrid",
+ "sqrid 0.0.18",
 ]
 
 [[package]]
@@ -236,7 +236,7 @@ dependencies = [
  "color-eyre",
  "itertools",
  "nom",
- "sqrid",
+ "sqrid 0.0.18",
 ]
 
 [[package]]
@@ -247,7 +247,7 @@ dependencies = [
  "color-eyre",
  "nom",
  "rayon",
- "sqrid",
+ "sqrid 0.0.18",
 ]
 
 [[package]]
@@ -266,6 +266,16 @@ dependencies = [
  "aoc",
  "color-eyre",
  "nom",
+]
+
+[[package]]
+name = "day14"
+version = "0.1.0"
+dependencies = [
+ "aoc",
+ "color-eyre",
+ "nom",
+ "sqrid 0.0.19",
 ]
 
 [[package]]
@@ -535,6 +545,12 @@ name = "sqrid"
 version = "0.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "42bcef427c0f62df62547ef60e3b463fd5f2fb62f814bb07c1685b1c1398220a"
+
+[[package]]
+name = "sqrid"
+version = "0.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "37fbfc5c2ea12255ad3ed9018888c9c62e8727d054e1258e7fb208d7a85c399f"
 
 [[package]]
 name = "thread_local"
