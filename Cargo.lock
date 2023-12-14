@@ -275,7 +275,7 @@ dependencies = [
  "aoc",
  "color-eyre",
  "nom",
- "sqrid 0.0.19",
+ "sqrid 0.0.21",
 ]
 
 [[package]]
@@ -548,9 +548,9 @@ checksum = "42bcef427c0f62df62547ef60e3b463fd5f2fb62f814bb07c1685b1c1398220a"
 
 [[package]]
 name = "sqrid"
-version = "0.0.19"
+version = "0.0.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "37fbfc5c2ea12255ad3ed9018888c9c62e8727d054e1258e7fb208d7a85c399f"
+checksum = "f978bd43a6f98f1d3d8b8cd066a650aa8230a48182a703869e8c9fa1dac5f08b"
 
 [[package]]
 name = "thread_local"

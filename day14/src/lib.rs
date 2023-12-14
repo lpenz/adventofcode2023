@@ -17,7 +17,7 @@ O.#..O.#.#
 #OO..#....
 ";
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, PartialOrd, Ord, Hash)]
 pub enum Cell {
     #[default]
     Empty,
@@ -36,6 +36,11 @@ impl TryFrom<char> for Cell {
         }
     }
 }
+
+pub use sqrid::Qr;
+pub type Sqrid = sqrid::sqrid_create!(100, 100, false);
+pub type Qa = sqrid::qa_create!(Sqrid);
+pub type Grid = sqrid::grid_create!(Sqrid, Cell);
 
 impl fmt::Display for Cell {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -74,4 +79,44 @@ fn test() -> Result<()> {
     assert_eq!(input.len(), 10);
     assert_eq!(input[0].len(), 10);
     Ok(())
+}
+
+pub fn tilt(size: usize, mut grid: Grid, qr: Qr) -> Grid {
+    let qas = if qr == Qr::N || qr == Qr::W {
+        Qa::iter().collect::<Vec<_>>()
+    } else {
+        Qa::iter().rev().collect::<Vec<_>>()
+    };
+    for qa_rock in qas {
+        if grid[qa_rock] != Cell::Rock {
+            continue;
+        }
+        let mut qa = qa_rock;
+        while let Ok(qa_new) = qa + qr {
+            let t = qa_new.tuple();
+            let t = (t.0 as usize, t.1 as usize);
+            if t.0 >= size || t.1 >= size || grid[qa_new] != Cell::Empty {
+                break;
+            }
+            qa = qa_new;
+        }
+        if qa != qa_rock {
+            grid[qa_rock] = Cell::Empty;
+            grid[qa] = Cell::Rock;
+        }
+    }
+    grid
+}
+
+pub fn grid_load(size: usize, grid: &Grid) -> usize {
+    Qa::iter()
+        .map(|qa| {
+            if grid[qa] == Cell::Rock {
+                let t = qa.tuple();
+                size - t.1 as usize
+            } else {
+                0
+            }
+        })
+        .sum()
 }
