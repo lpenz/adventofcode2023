@@ -2,24 +2,20 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-// pub use color_eyre::Result;
 use std::io::{stdin, BufRead};
 
 use day15::*;
 
-fn hash(steps: &str) -> u32 {
-    steps.chars().fold(0, |value, c| {
-        let ascii = c as u32;
-        ((value + ascii) * 17) % 256
-    })
+fn hash(steps: &Step) -> usize {
+    hash_str(&format!("{}", steps))
 }
 
 #[test]
 fn test_hash() {
-    assert_eq!(hash("HASH"), 52);
+    assert_eq!(hash_str("HASH"), 52);
 }
 
-fn process(bufin: impl BufRead) -> Result<u32> {
+fn process(bufin: impl BufRead) -> Result<usize> {
     let input = parser::parse(bufin)?;
     Ok(input.into_iter().map(|step| hash(&step)).sum())
 }
