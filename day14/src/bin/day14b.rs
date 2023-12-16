@@ -30,7 +30,6 @@ fn process(size: usize, bufin: impl BufRead) -> Result<usize> {
     let mut cache = HashMap::<Grid, u64>::default();
     let mut icycle = 0;
     while icycle < CYCLES {
-        eprintln!("cycle {}", icycle);
         for qr in [Qr::N, Qr::W, Qr::S, Qr::E] {
             grid = tilt(size, grid, qr);
         }
