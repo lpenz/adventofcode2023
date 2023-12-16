@@ -41,6 +41,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d468802bab17cbc0cc575e9b053f41e72aa36bfa6b7f55e3529ffa43161b97fa"
 
 [[package]]
+name = "autofolder"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4f5000a492db65d279c7ce9bf420b8ad6861020c94bcb0f1aa7c0869ff8b274a"
+
+[[package]]
 name = "backtrace"
 version = "0.3.69"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -292,6 +298,7 @@ name = "day16"
 version = "0.1.0"
 dependencies = [
  "aoc",
+ "autofolder",
  "color-eyre",
  "nom",
  "sqrid 0.0.22",
