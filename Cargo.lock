@@ -288,6 +288,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "day16"
+version = "0.1.0"
+dependencies = [
+ "aoc",
+ "color-eyre",
+ "nom",
+ "sqrid 0.0.22",
+]
+
+[[package]]
 name = "either"
 version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -560,6 +570,12 @@ name = "sqrid"
 version = "0.0.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f978bd43a6f98f1d3d8b8cd066a650aa8230a48182a703869e8c9fa1dac5f08b"
+
+[[package]]
+name = "sqrid"
+version = "0.0.22"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "92bfab44888e2fc47178beb71e1ad84bd2a97361a6943019a8602f214ae4c126"
 
 [[package]]
 name = "thread_local"
