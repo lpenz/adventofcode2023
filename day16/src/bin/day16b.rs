@@ -20,7 +20,7 @@ fn process(size: u16, bufin: impl BufRead) -> Result<usize> {
         })
         .map(|start| calc_energized(size, &grid, &mut cache, start))
         .max()
-        .ok_or(eyre!("max not found"))
+        .ok_or_eyre("max not found")
 }
 
 #[test]

@@ -2,8 +2,9 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+use std::fmt::{Debug, Display};
 pub use std::io::{stdin, BufRead};
-pub use std::time::Instant;
+use std::time::Instant;
 
 pub use color_eyre::eyre::eyre;
 pub use color_eyre::Report;
@@ -35,7 +36,25 @@ pub mod parser {
     }
 }
 
-pub fn do_main<F: Fn() -> Result<T>, T: std::fmt::Display>(f: F) -> Result<()> {
+pub trait OptionExt<T> {
+    fn ok_or_eyre<M>(self, message: M) -> Result<T>
+    where
+        M: Debug + Display + Send + Sync + 'static;
+}
+
+impl<T> OptionExt<T> for Option<T> {
+    fn ok_or_eyre<M>(self, message: M) -> Result<T>
+    where
+        M: Debug + Display + Send + Sync + 'static,
+    {
+        match self {
+            Some(ok) => Ok(ok),
+            None => Err(Report::msg(message)),
+        }
+    }
+}
+
+pub fn do_main<F: Fn() -> Result<T>, T: Display>(f: F) -> Result<()> {
     color_eyre::install()?;
     let start = Instant::now();
     println!("{}", f()?);
