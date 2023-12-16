@@ -13,3 +13,41 @@ jobs:
       coveralls: true
       publish_cratesio: false
       publish_github_release: false
+  solve:
+    strategy:
+        matrix:
+          day:
+            - day01
+            - day02
+            - day03
+            - day04
+            - day05
+            - day06
+            - day07
+            - day08
+            - day09
+            - day10
+            - day11
+            - day12
+            - day13
+            - day14
+            - day15
+            - day16
+          part: [ a, b ]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: [ omnilint, rust ]
+    steps:
+      - uses: actions/checkout@v3.5.3
+      - name: build ${{ matrix.day }}${{ matrix.part }}
+        run: |
+          cargo build \
+             --release \
+             -p ${{ matrix.day }} \
+             --bin ${{ matrix.day }}${{ matrix.part }}
+      - name: solve ${{ matrix.day }}${{ matrix.part }}
+        run: |
+          ./target/release/${{ matrix.day }}${{ matrix.part }} \
+          < ${{ matrix.day }}/input.txt \
+          2>&1 | tee "$GITHUB_STEP_SUMMARY"
+
