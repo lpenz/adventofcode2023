@@ -13,8 +13,7 @@ fn process(bufin: impl BufRead) -> Result<usize> {
 
 #[test]
 fn test() -> Result<()> {
-    let input = parser::parse(EXAMPLE.as_bytes())?;
-    assert_eq!(input.len(), 1);
+    assert_eq!(process(EXAMPLE.as_bytes())?, 1);
     Ok(())
 }
 
