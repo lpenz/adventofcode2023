@@ -2,7 +2,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-pub use color_eyre::{eyre::eyre, Result};
+pub use aoc::*;
 
 pub const EXAMPLE1: &str = "1abc2
 pqr3stu8vwx
@@ -20,7 +20,7 @@ zoneight234
 ";
 
 pub mod parser {
-    use aoc::parser::*;
+    pub use aoc::parser::*;
 
     // use super::*;
 

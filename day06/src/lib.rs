@@ -2,7 +2,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-pub use color_eyre::{eyre::eyre, Result};
+pub use aoc::*;
 
 pub const EXAMPLE: &str = "Time:      7  15   30
 Distance:  9  40  200

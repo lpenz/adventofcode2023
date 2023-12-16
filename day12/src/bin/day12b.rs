@@ -2,8 +2,6 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-use std::io::{stdin, BufRead};
-
 use day12::*;
 
 pub fn unfold_calc_arrangements(row: &Row, record: &[u32]) -> usize {
@@ -32,7 +30,5 @@ fn test() -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    color_eyre::install()?;
-    println!("{}", process(stdin().lock())?);
-    Ok(())
+    do_main(|| process(stdin().lock()))
 }

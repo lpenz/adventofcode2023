@@ -2,10 +2,9 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-use rayon::prelude::*;
-use std::io::{stdin, BufRead};
-
 use day02::*;
+
+use rayon::prelude::*;
 
 fn process(bufin: impl BufRead) -> Result<u32> {
     let input = parser::parse(bufin)?;
@@ -34,7 +33,5 @@ fn test() -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    color_eyre::install()?;
-    println!("{}", process(stdin().lock())?);
-    Ok(())
+    do_main(|| process(stdin().lock()))
 }

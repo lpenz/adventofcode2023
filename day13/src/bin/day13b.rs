@@ -2,10 +2,9 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-use std::collections::HashSet;
-use std::io::{stdin, BufRead};
-
 use day13::*;
+
+use std::collections::HashSet;
 
 pub fn flip(g: &mut HashSet<Xy>, xy: &Xy) {
     if g.contains(xy) {
@@ -43,7 +42,5 @@ fn test() -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    color_eyre::install()?;
-    println!("{}", process(stdin().lock())?);
-    Ok(())
+    do_main(|| process(stdin().lock()))
 }

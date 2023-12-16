@@ -2,7 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-pub use color_eyre::{eyre::eyre, Result};
+pub use aoc::*;
+
 pub use std::fmt;
 
 pub const EXAMPLE: &str = "rn=1,cm-,qp=3,cm=2,qp-,pc=4,ot=9,ab=5,pc-,pc=6,ot=7\n";

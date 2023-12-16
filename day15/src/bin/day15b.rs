@@ -2,10 +2,9 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-use std::collections::HashMap;
-use std::io::{stdin, BufRead};
-
 use day15::*;
+
+use std::collections::HashMap;
 
 pub type FocalLen = u32;
 
@@ -78,7 +77,5 @@ fn test() -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    color_eyre::install()?;
-    println!("{}", process(stdin().lock())?);
-    Ok(())
+    do_main(|| process(stdin().lock()))
 }

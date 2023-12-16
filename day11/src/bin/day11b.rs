@@ -2,11 +2,10 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
+use day11::*;
+
 use rayon::prelude::*;
 use std::collections::HashSet;
-use std::io::{stdin, BufRead};
-
-use day11::*;
 
 pub use sqrid::Qr;
 pub type Sqrid = sqrid::sqrid_create!(140, 140, false);
@@ -82,7 +81,5 @@ fn test() -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    color_eyre::install()?;
-    println!("{}", process(1_000_000, stdin().lock())?);
-    Ok(())
+    do_main(|| process(1_000_000, stdin().lock()))
 }

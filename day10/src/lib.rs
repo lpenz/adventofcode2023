@@ -2,7 +2,7 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-pub use color_eyre::{eyre::eyre, Report, Result};
+pub use aoc::*;
 
 pub const EXAMPLE1: &str = "-L|F7
 7S-7|

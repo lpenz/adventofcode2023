@@ -2,7 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-pub use color_eyre::{eyre::eyre, Result};
+pub use aoc::*;
+
 pub use std::collections::BTreeMap;
 
 pub const EXAMPLE: &str = "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green

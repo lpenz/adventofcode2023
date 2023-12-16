@@ -2,10 +2,9 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-use rayon::prelude::*;
-use std::io::{stdin, BufRead};
-
 use day09::*;
+
+use rayon::prelude::*;
 
 fn calc_next(nums: &Vec<i64>) -> i64 {
     let mut lastsum = nums[nums.len() - 1];
@@ -29,7 +28,5 @@ fn test() -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    color_eyre::install()?;
-    println!("{}", process(stdin().lock())?);
-    Ok(())
+    do_main(|| process(stdin().lock()))
 }

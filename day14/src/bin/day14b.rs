@@ -2,10 +2,9 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-use std::collections::HashMap;
-use std::io::{stdin, BufRead};
-
 use day14::*;
+
+use std::collections::HashMap;
 
 pub use sqrid::Qr;
 pub type Sqrid = sqrid::sqrid_create!(100, 100, false);
@@ -54,7 +53,5 @@ fn test() -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    color_eyre::install()?;
-    println!("{}", process(100, stdin().lock())?);
-    Ok(())
+    do_main(|| process(100, stdin().lock()))
 }

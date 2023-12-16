@@ -2,10 +2,9 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-use std::collections::HashSet;
-use std::io::{stdin, BufRead};
-
 use day16::*;
+
+use std::collections::HashSet;
 
 fn process(size: u16, bufin: impl BufRead) -> Result<usize> {
     let input = parser::parse(bufin)?;
@@ -34,7 +33,5 @@ fn test() -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    color_eyre::install()?;
-    println!("{}", process(110, stdin().lock())?);
-    Ok(())
+    do_main(|| process(110, stdin().lock()))
 }

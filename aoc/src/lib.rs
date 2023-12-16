@@ -1,6 +1,18 @@
+// Copyright (C) 2023 Leandro Lisboa Penz <lpenz@lpenz.org>
+// This file is subject to the terms and conditions defined in
+// file 'LICENSE', which is part of this source code package.
+
+pub use std::io::{stdin, BufRead};
+pub use std::time::Instant;
+
+pub use color_eyre::eyre::eyre;
+pub use color_eyre::Report;
+pub use color_eyre::Result;
+
 #[macro_use]
 pub mod parser {
     pub use color_eyre::eyre::eyre;
+    pub use color_eyre::Report;
     pub use color_eyre::Result;
     pub use combinator::all_consuming;
     pub use nom::branch;
@@ -21,4 +33,12 @@ pub mod parser {
             Ok(result.map_err(|e| eyre!("error reading input: {:?}", e))?.1)
         }};
     }
+}
+
+pub fn do_main<F: Fn() -> Result<T>, T: std::fmt::Display>(f: F) -> Result<()> {
+    color_eyre::install()?;
+    let start = Instant::now();
+    println!("{}", f()?);
+    println!("Elapsed: {}", humantime::Duration::from(start.elapsed()));
+    Ok(())
 }

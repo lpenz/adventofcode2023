@@ -2,7 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-pub use color_eyre::{eyre::eyre, Report, Result};
+pub use aoc::*;
+
 use std::collections::BTreeSet;
 use std::collections::HashMap;
 use std::fmt;

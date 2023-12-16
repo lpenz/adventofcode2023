@@ -2,17 +2,12 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-use color_eyre::eyre;
-use std::io::{stdin, BufRead};
-
-use aoc::parser::*;
-
 use day01::*;
 
-fn firstnum(input: &str) -> IResult<&str, u32> {
-    let (input, _) = character::alpha0(input)?;
-    let (input, numstr) = character::one_of("0123456789")(input)?;
-    let (input, _) = character::alphanumeric0(input)?;
+fn firstnum(input: &str) -> parser::IResult<&str, u32> {
+    let (input, _) = parser::character::alpha0(input)?;
+    let (input, numstr) = parser::character::one_of("0123456789")(input)?;
+    let (input, _) = parser::character::alphanumeric0(input)?;
     Ok((input, numstr.to_digit(10).unwrap()))
 }
 
@@ -21,18 +16,16 @@ fn process(bufin: impl BufRead) -> Result<u32> {
     Ok(lines
         .into_iter()
         .map(|line| {
-            let first = all_consuming(firstnum)(&line)
-                .finish()
+            let first = parser::all_consuming(firstnum)(&line)
                 .map_err(|e| eyre!("error reading first digit {:?}", e))?
                 .1;
             let reversed = line.chars().rev().collect::<String>();
-            let last = all_consuming(firstnum)(&reversed)
-                .finish()
+            let last = parser::all_consuming(firstnum)(&reversed)
                 .map_err(|e| eyre!("error reading last digit {:?}", e))?
                 .1;
             Ok(first * 10 + last)
         })
-        .collect::<eyre::Result<Vec<_>>>()?
+        .collect::<Result<Vec<_>>>()?
         .into_iter()
         .sum())
 }
@@ -44,7 +37,5 @@ fn test() -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    color_eyre::install()?;
-    println!("{}", process(stdin().lock())?);
-    Ok(())
+    do_main(|| process(stdin().lock()))
 }

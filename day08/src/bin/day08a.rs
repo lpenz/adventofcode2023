@@ -2,11 +2,10 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-use std::collections::HashMap;
-use std::io::{stdin, BufRead};
-use std::str::FromStr;
-
 use day08::*;
+
+use std::collections::HashMap;
+use std::str::FromStr;
 
 fn process(bufin: impl BufRead) -> Result<usize> {
     let (instrs, paths) = parser::parse(bufin)?;
@@ -32,7 +31,5 @@ fn test() -> Result<()> {
 }
 
 fn main() -> Result<()> {
-    color_eyre::install()?;
-    println!("{}", process(stdin().lock())?);
-    Ok(())
+    do_main(|| process(stdin().lock()))
 }

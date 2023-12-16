@@ -2,7 +2,8 @@
 // This file is subject to the terms and conditions defined in
 // file 'LICENSE', which is part of this source code package.
 
-pub use color_eyre::{eyre::eyre, Result};
+pub use aoc::*;
+
 use rayon::prelude::*;
 
 pub const EXAMPLE: &str = "0 3 6 9 12 15
