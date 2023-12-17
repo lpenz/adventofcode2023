@@ -33,6 +33,7 @@ jobs:
             - day14
             - day15
             - day16
+            - day17
     if: github.ref == 'refs/heads/main'
     needs: [ omnilint, rust ]
     runs-on: ubuntu-latest
