@@ -4,6 +4,8 @@
 
 pub use aoc::*;
 
+use std::collections::HashSet;
+
 pub const EXAMPLE: &str = "...#......
 .......#..
 #.........
@@ -59,4 +61,61 @@ pub mod parser {
 fn test() -> Result<()> {
     assert_eq!(parser::parse(EXAMPLE.as_bytes())?.len(), 10);
     Ok(())
+}
+
+pub fn calc_distances(inc: i64, input: Vec<Vec<Cell>>) -> Result<i64> {
+    let galaxies = input
+        .into_iter()
+        .enumerate()
+        .flat_map(|(y, line)| {
+            line.into_iter().enumerate().filter_map(move |(x, cell)| {
+                if cell == Cell::Galaxy {
+                    Some((x as i64, y as i64))
+                } else {
+                    None
+                }
+            })
+        })
+        .collect::<HashSet<(i64, i64)>>();
+    let xs = galaxies
+        .iter()
+        .map(|(x, _)| x)
+        .copied()
+        .collect::<HashSet<_>>();
+    let xmax = xs.iter().max().copied().unwrap();
+    let ys = galaxies
+        .iter()
+        .map(|(_, y)| y)
+        .copied()
+        .collect::<HashSet<_>>();
+    let ymax = ys.iter().max().copied().unwrap();
+    let mut galaxies2 = Vec::<(i64, i64)>::new();
+    let mut yinc = 0_i64;
+    for y in 0..=ymax {
+        if !ys.contains(&y) {
+            yinc += inc;
+        } else {
+            let mut xinc = 0_i64;
+            for x in 0..=xmax {
+                if !xs.contains(&x) {
+                    xinc += inc;
+                } else {
+                    if galaxies.contains(&(x, y)) {
+                        let x = x as i64;
+                        let y = y as i64;
+                        galaxies2.push((x + xinc, y + yinc));
+                    }
+                }
+            }
+        }
+    }
+    let gpairs = galaxies2
+        .iter()
+        .enumerate()
+        .flat_map(|(i, g1)| galaxies2[i + 1..].iter().map(move |g2| (g1, g2)))
+        .collect::<Vec<_>>();
+    Ok(gpairs
+        .into_iter()
+        .map(|(g1, g2)| (g2.0 - g1.0).abs() + (g2.1 - g1.1).abs())
+        .sum())
 }

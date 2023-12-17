@@ -253,8 +253,6 @@ dependencies = [
  "aoc",
  "color-eyre",
  "nom",
- "rayon",
- "sqrid 0.0.18",
 ]
 
 [[package]]
