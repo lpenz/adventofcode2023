@@ -33,21 +33,22 @@ jobs:
             - day14
             - day15
             - day16
-          part: [ a, b ]
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
     needs: [ omnilint, rust ]
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3.5.3
-      - name: build ${{ matrix.day }}${{ matrix.part }}
+      - name: build ${{ matrix.day }}
         run: |
           cargo build \
-             --release \
-             -p ${{ matrix.day }} \
-             --bin ${{ matrix.day }}${{ matrix.part }}
-      - name: solve ${{ matrix.day }}${{ matrix.part }}
+            --release \
+            -p ${{ matrix.day }}
+      - name: solve ${{ matrix.day }}
         run: |
-          ./target/release/${{ matrix.day }}${{ matrix.part }} \
-          < ${{ matrix.day }}/input.txt \
-          2>&1 | tee "$GITHUB_STEP_SUMMARY"
+          for part in a b; do
+            bin="./target/release/${{ matrix.day }}$part"
+            if [ -x "$bin" ]; then
+              (set -x; "$bin" < ${{ matrix.day }}/input.txt) 2>&1 | tee -a "$GITHUB_STEP_SUMMARY"
+            fi
+          done
 
