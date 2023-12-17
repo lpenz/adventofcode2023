@@ -4,6 +4,11 @@
 
 pub use aoc::*;
 
+use std::cmp::Reverse;
+use std::collections::BinaryHeap;
+use std::collections::HashMap;
+use std::collections::HashSet;
+
 pub const EXAMPLE: &str = "2413432311323
 3215453535623
 3255245654254
@@ -71,4 +76,65 @@ pub fn path_debug(_size: u16, gheat: &Grid, path: &[Dir]) {
     }
     eprintln!("{:1}", gdir);
     eprintln!("{:>4}", gheatacum);
+}
+
+pub type Heat = u32;
+
+#[derive(Debug, Default, Hash, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
+pub struct State {
+    pub pos: Pos,
+    pub lastdir: Option<Dir>,
+    pub dircount: usize,
+}
+
+pub fn solve<F: Fn(&State, Dir) -> bool>(size: u16, gheat: Grid, dir_valid: F) -> Result<u32> {
+    let mut frontier = BinaryHeap::<(Reverse<Heat>, State)>::default();
+    frontier.push((Reverse(0), State::default()));
+    let mut visited = HashSet::<State>::default();
+    let mut heatacummap = HashMap::<State, Heat>::default();
+    heatacummap.insert(State::default(), 0);
+    let goal = Pos::try_from((size - 1, size - 1)).unwrap();
+    while let Some((_priority, st)) = frontier.pop() {
+        let pos = st.pos;
+        if visited.contains(&st) {
+            continue;
+        }
+        let heatacum = heatacummap[&st];
+        if pos == goal {
+            return Ok(heatacum);
+        }
+        for dir in Dir::iter::<false>() {
+            if !dir_valid(&st, dir) {
+                continue;
+            }
+            let Ok(newpos) = pos + dir else { continue };
+            let t = newpos.tuple();
+            if t.0 >= size || t.1 >= size {
+                continue;
+            }
+            let heatacum = heatacum + gheat[newpos];
+            let dircount = if Some(dir) == st.lastdir {
+                st.dircount + 1
+            } else {
+                1
+            };
+            let newst = State {
+                pos: newpos,
+                lastdir: Some(dir),
+                dircount,
+            };
+            let e = heatacummap.entry(newst).or_insert(heatacum);
+            if heatacum < *e {
+                *e = heatacum;
+            }
+            if visited.contains(&newst) {
+                continue;
+            }
+            let dist = Pos::manhattan(&newpos, &goal) as u32;
+            let priority = Reverse(heatacum + dist);
+            frontier.push((priority, newst));
+        }
+        visited.insert(st);
+    }
+    unreachable!();
 }
