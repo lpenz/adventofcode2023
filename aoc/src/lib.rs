@@ -54,10 +54,14 @@ impl<T> OptionExt<T> for Option<T> {
     }
 }
 
+pub fn elapsed(start: &Instant) -> String {
+    format!("{}", humantime::Duration::from(start.elapsed()))
+}
+
 pub fn do_main<F: Fn() -> Result<T>, T: Display>(f: F) -> Result<()> {
     color_eyre::install()?;
     let start = Instant::now();
     println!("{}", f()?);
-    println!("Elapsed: {}", humantime::Duration::from(start.elapsed()));
+    println!("Elapsed: {}", elapsed(&start));
     Ok(())
 }
