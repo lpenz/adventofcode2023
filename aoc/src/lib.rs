@@ -18,7 +18,9 @@ pub mod parser {
     pub use combinator::all_consuming;
     pub use nom::branch;
     pub use nom::bytes::complete as bytes;
+    pub use nom::bytes::complete::tag;
     pub use nom::character::complete as character;
+    pub use nom::character::complete::newline;
     pub use nom::combinator;
     pub use nom::multi;
     pub use nom::Finish;
@@ -33,6 +35,10 @@ pub mod parser {
             let result = all_consuming($parser)(&input).finish();
             Ok(result.map_err(|e| eyre!("error reading input: {:?}", e))?.1)
         }};
+    }
+
+    pub fn space(input: &str) -> IResult<&str, &str> {
+        tag(" ")(input)
     }
 }
 
