@@ -4,13 +4,11 @@
 
 use day20::*;
 
-use std::collections::BTreeMap;
-
 fn process(bufin: impl BufRead) -> Result<u64> {
     let modules = parser::parse(bufin)?;
-    let mut sts = sts_init(modules);
+    let mut sts = sts_init(&modules);
     let broadcast_mname: Mname = "0".into();
-    sts.insert(&broadcast_mname, ModState::default());
+    sts.insert(broadcast_mname, ModState::default());
     let mut total_low = 0_u64;
     let mut total_high = 0_u64;
     for _i in 0..1000 {

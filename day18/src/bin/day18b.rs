@@ -5,16 +5,17 @@
 use day18::*;
 
 fn process(bufin: impl BufRead) -> Result<i64> {
-    let instructions = parser::parse(bufin)?
+    let input = parser::parse(bufin)?;
+    let instructions = input
         .into_iter()
-        .map(|(dir, meters, _)| (dir, meters))
-        .collect::<Vec<_>>();
+        .map(|(_, _, color)| color2instr(color))
+        .collect::<Result<Vec<_>>>()?;
     calc_area(instructions)
 }
 
 #[test]
 fn test() -> Result<()> {
-    assert_eq!(process(EXAMPLE.as_bytes())?, 62);
+    assert_eq!(process(EXAMPLE.as_bytes())?, 952408144115);
     Ok(())
 }
 

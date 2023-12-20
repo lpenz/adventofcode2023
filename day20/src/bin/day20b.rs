@@ -8,9 +8,9 @@ use std::collections::BTreeMap;
 
 fn process(bufin: impl BufRead) -> Result<u64> {
     let modules = parser::parse(bufin)?;
-    let mut sts = sts_init(modules);
+    let mut sts = sts_init(&modules);
     let broadcast_mname: Mname = "0".into();
-    sts.insert(&broadcast_mname, ModState::default());
+    sts.insert(broadcast_mname, ModState::default());
     // This is hard-coded from inspecting the graph:
     let mut targets: BTreeMap<Mname, Option<u64>> = [
         ("kc".into(), None),
