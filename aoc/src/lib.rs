@@ -21,6 +21,7 @@ pub mod parser {
     pub use nom::bytes::complete::tag;
     pub use nom::character::complete as character;
     pub use nom::character::complete::newline;
+    pub use nom::character::complete::satisfy;
     pub use nom::combinator;
     pub use nom::multi;
     pub use nom::Finish;
@@ -39,6 +40,15 @@ pub mod parser {
 
     pub fn space(input: &str) -> IResult<&str, &str> {
         tag(" ")(input)
+    }
+
+    pub fn lowercase_char(input: &str) -> IResult<&str, char> {
+        satisfy(|c| c.is_ascii_lowercase())(input)
+    }
+
+    pub fn lowercase_str(input: &str) -> IResult<&str, String> {
+        let (input, cs) = multi::many1(lowercase_char)(input)?;
+        Ok((input, cs.into_iter().collect()))
     }
 }
 
