@@ -13,6 +13,8 @@ Some interesting things that happened on specific days:
 
 - Day 05b: used `Range{ ini, end }` to represent sets of numbers
   (which was not necessary).
+- Day 20b: had to look at the graph to figure out the "counter result
+  modules".
 
 
 <table><tr>

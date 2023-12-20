@@ -148,3 +148,72 @@ fn test2() -> Result<()> {
     assert_eq!(input.len(), 6);
     Ok(())
 }
+
+#[derive(Default, Debug)]
+pub struct ModState {
+    state: bool,
+    // Conjunction memory:
+    memory: BTreeMap<Mname, bool>,
+}
+
+pub fn sts_init(modules: &BTreeMap<Mname, Module>) -> BTreeMap<Mname, ModState> {
+    let mut sts = BTreeMap::new();
+    for mname in modules.keys() {
+        sts.insert(*mname, ModState::default());
+    }
+    for src_mname in modules.keys() {
+        let src_module = &modules[src_mname];
+        for dst_mname in &src_module.dsts {
+            let dst_module = &modules[&dst_mname];
+            if dst_module.mtype == Mtype::Conjunct {
+                let conj = sts.get_mut(dst_mname).unwrap();
+                conj.memory.insert(*src_mname, false);
+            }
+        }
+    }
+    sts
+}
+
+pub fn eval<'a>(
+    module: &'a Module,
+    msts: &'a mut ModState,
+    src_mname: Mname,
+    pulse: bool,
+) -> Box<dyn Iterator<Item = (Mname, bool, Mname)> + 'a> {
+    match module.mtype {
+        Mtype::Broadcast => Box::new(
+            module
+                .dsts
+                .iter()
+                .copied()
+                .map(move |d| (module.mname, pulse, d)),
+        ),
+        Mtype::FlipFlop => {
+            if !pulse {
+                msts.state = !msts.state;
+                Box::new(
+                    module
+                        .dsts
+                        .iter()
+                        .copied()
+                        .map(|d| (module.mname, msts.state, d)),
+                )
+            } else {
+                Box::new(std::iter::empty())
+            }
+        }
+        Mtype::Conjunct => {
+            msts.memory.insert(src_mname, pulse);
+            // eprintln!("{} memory {:?}", module.mname.0, msts.memory);
+            let pulse = !msts.memory.values().all(|v| *v);
+            Box::new(
+                module
+                    .dsts
+                    .iter()
+                    .copied()
+                    .map(move |d| (module.mname, pulse, d)),
+            )
+        }
+        Mtype::None => Box::new(std::iter::empty()),
+    }
+}

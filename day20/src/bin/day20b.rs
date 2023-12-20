@@ -11,17 +11,18 @@ fn process(bufin: impl BufRead) -> Result<u64> {
     let mut sts = sts_init(modules);
     let broadcast_mname: Mname = "0".into();
     sts.insert(&broadcast_mname, ModState::default());
-    let mut total_low = 0_u64;
-    let mut total_high = 0_u64;
-    for _i in 0..1000 {
+    // This is hard-coded from inspecting the graph:
+    let mut targets: BTreeMap<Mname, Option<u64>> = [
+        ("kc".into(), None),
+        ("hd".into(), None),
+        ("fl".into(), None),
+        ("tb".into(), None),
+    ]
+    .into_iter()
+    .collect();
+    for button in 1..u64::MAX {
         let mut pulses = vec![(broadcast_mname, false, broadcast_mname)];
         while !pulses.is_empty() {
-            // eprintln!("i {} pulses {:?}", i, pulses);
-            let (low, high) = pulses.iter().fold((0, 0), |(low, high), (_, p, _)| {
-                (low + if !p { 1 } else { 0 }, high + if *p { 1 } else { 0 })
-            });
-            total_low += low;
-            total_high += high;
             let mut next_pulses = Vec::<(Mname, bool, Mname)>::new();
             for (src_mname, pulse, dst_mname) in pulses.into_iter() {
                 let module = &modules[&dst_mname];
@@ -30,21 +31,23 @@ fn process(bufin: impl BufRead) -> Result<u64> {
                 next_pulses.extend(module_pulses.into_iter());
             }
             pulses = next_pulses;
+            for (src_mname, pulse, _dst_mname) in &pulses {
+                if *pulse {
+                    continue;
+                }
+                if targets.contains_key(src_mname) && targets[src_mname].is_none() {
+                    targets.insert(*src_mname, Some(button));
+                }
+            }
+            if targets.values().all(|v| v.is_some()) {
+                // Also hard-coded: they all activate at button
+                // presses that are prime numbers, so we can just
+                // multiply:
+                return Ok(targets.values().map(|opt| opt.unwrap()).product::<u64>());
+            }
         }
     }
-    Ok(total_low * total_high)
-}
-
-#[test]
-fn test1() -> Result<()> {
-    assert_eq!(process(EXAMPLE1.as_bytes())?, 32000000);
-    Ok(())
-}
-
-#[test]
-fn test2() -> Result<()> {
-    assert_eq!(process(EXAMPLE2.as_bytes())?, 11687500);
-    Ok(())
+    unreachable!()
 }
 
 fn main() -> Result<()> {

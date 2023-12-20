@@ -1,0 +1,121 @@
+digraph {
+    maxiter="1000"
+
+    dt [shape="box" color="blue" label="%dt"]
+    tl [shape="box" color="blue" label="%tl"]
+    vx [shape="box" color="blue" label="%vx"]
+    sz [shape="box" color="blue" label="%sz"]
+    kj [shape="box" color="blue" label="%kj"]
+    pm [shape="box" color="blue" label="%pm"]
+    fc [shape="box" color="blue" label="%fc"]
+    tb [color="red" label="&tb"]
+    df [shape="box" color="blue" label="%df"]
+    qq [shape="box" color="blue" label="%qq"]
+    sl [shape="box" color="blue" label="%sl"]
+    pv [color="red" label="&pv"]
+    gf [shape="box" color="blue" label="%gf"]
+    pb [shape="box" color="blue" label="%pb"]
+    gr [shape="box" color="blue" label="%gr"]
+    gs [shape="box" color="blue" label="%gs"]
+    tx [shape="box" color="blue" label="%tx"]
+    jm [shape="box" color="blue" label="%jm"]
+    bh [shape="box" color="blue" label="%bh"]
+    rt [shape="box" color="blue" label="%rt"]
+    qh [color="red" label="&qh"]
+    lb [shape="box" color="blue" label="%lb"]
+    pd [shape="box" color="blue" label="%pd"]
+    qn [shape="box" color="blue" label="%qn"]
+    gb [shape="box" color="blue" label="%gb"]
+    xm [color="red" label="&xm"]
+    mv [shape="box" color="blue" label="%mv"]
+    gz [shape="box" color="blue" label="%gz"]
+    js [shape="box" color="blue" label="%js"]
+    hp [shape="box" color="blue" label="%hp"]
+    nk [shape="box" color="blue" label="%nk"]
+    kh [color="red" label="&kh"]
+    zc [shape="box" color="blue" label="%zc"]
+    mp [shape="box" color="blue" label="%mp"]
+    zm [shape="box" color="blue" label="%zm"]
+    xh [shape="box" color="blue" label="%xh"]
+    db [shape="box" color="blue" label="%db"]
+    sx [shape="box" color="blue" label="%sx"]
+    hz [color="red" label="&hz"]
+    vj [shape="box" color="blue" label="%vj"]
+    zq [shape="box" color="blue" label="%zq"]
+    lj [shape="box" color="blue" label="%lj"]
+    lg [shape="box" color="blue" label="%lg"]
+    fl [color="red" label="&fl"]
+    kc [color="red" label="&kc"]
+    lq [shape="box" color="blue" label="%lq"]
+    hd [color="red" label="&hd"]
+    mb [shape="box" color="blue" label="%mb"]
+    vz [shape="box" color="blue" label="%vz"]
+    fm [shape="box" color="blue" label="%fm"]
+    bb [shape="box" color="blue" label="%bb"]
+    zb [shape="box" color="blue" label="%zb"]
+    xp [shape="box" color="blue" label="%xp"]
+    jk [shape="box" color="blue" label="%jk"]
+    xv [shape="box" color="blue" label="%xv"]
+    sk [shape="box" color="blue" label="%sk"]
+    cd [shape="box" color="blue" label="%cd"]
+
+
+    dt -> fm, hd
+    tl -> jk, hd
+    vx -> kc, sz
+    sz -> kc
+    kj -> tl, hd
+    pm -> tb
+    fc -> rt
+    tb -> sx, qn, vj, qq, sk, pv
+    df -> bb
+    qq -> jm
+    sl -> vz
+    broadcaster -> hp, zb, xv, qn
+    pv -> kh
+    gf -> pm, tb
+    pb -> hd, kj
+    gr -> hd, pb
+    gs -> kc, pd
+    tx -> df
+    jm -> tb, db
+    bh -> fl, gz
+    rt -> kc, xp
+    qh -> kh
+    lb -> zm, fl
+    pd -> lq
+    qn -> sk, tb
+    gb -> qq, tb
+    xm -> kh
+    mv -> hd, gr
+    gz -> fl
+    js -> mv
+    hp -> dt, hd
+    nk -> kc, vx
+    kh -> rx
+    zc -> tx
+    mp -> js, hd
+    zm -> mb
+    xh -> cd, tb
+    db -> xh, tb
+    sx -> vj
+    hz -> kh
+    vj -> gb
+    zq -> hd
+    lj -> fc, kc
+    lg -> kc, nk
+    fl -> xv, tx, sl, df, qh, zc, zm
+    kc -> zb, xp, pd, fc, xm
+    lq -> kc, lj
+    hd -> hp, js, hz
+    mb -> fl, sl
+    vz -> fl, bh
+    fm -> mp, hd
+    bb -> fl, lb
+    zb -> gs, kc
+    xp -> lg
+    jk -> zq, hd
+    xv -> zc, fl
+    sk -> sx
+    cd -> gf, tb
+}
