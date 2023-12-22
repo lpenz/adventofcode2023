@@ -5,6 +5,7 @@
 pub use aoc::*;
 
 use std::cmp::min;
+use std::collections::HashSet;
 
 pub const EXAMPLE: &str = "1,0,1~1,2,1
 0,0,2~2,0,2
@@ -113,4 +114,22 @@ pub fn falls_to(bricks: &[Brick], b: &Brick) -> Option<i64> {
     } else {
         (b.2.min() != 1).then_some(1)
     }
+}
+
+pub fn settle_bricks(bricks: &mut [Brick]) -> usize {
+    let mut changed = true;
+    let mut fell = HashSet::<usize>::new();
+    while changed {
+        let old = bricks.to_vec();
+        changed = false;
+        for (i, b) in bricks.iter_mut().enumerate() {
+            if let Some(z) = falls_to(&old, b) {
+                let height = b.2.max() - b.2.min();
+                b.2 = Range::new(z, z + height);
+                fell.insert(i);
+                changed = true;
+            }
+        }
+    }
+    fell.len()
 }

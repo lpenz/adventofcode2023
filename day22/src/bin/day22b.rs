@@ -6,27 +6,24 @@ use day22::*;
 
 use rayon::prelude::*;
 
-fn can_disintegrate(bricks: &[Brick], b: &Brick) -> bool {
-    let bricks = bricks
+fn would_fall(bricks: &[Brick], b: &Brick) -> usize {
+    let mut bricks = bricks
         .iter()
         .filter(|o| o != &b)
         .copied()
         .collect::<Vec<_>>();
-    bricks.par_iter().all(|o| falls_to(&bricks, o).is_none())
+    settle_bricks(&mut bricks)
 }
 
 fn process(bufin: impl BufRead) -> Result<usize> {
     let mut bricks = parser::parse(bufin)?;
     settle_bricks(&mut bricks);
-    Ok(bricks
-        .par_iter()
-        .filter(|b| can_disintegrate(&bricks, b))
-        .count())
+    Ok(bricks.par_iter().map(|b| would_fall(&bricks, b)).sum())
 }
 
 #[test]
 fn test() -> Result<()> {
-    assert_eq!(process(EXAMPLE.as_bytes())?, 5);
+    assert_eq!(process(EXAMPLE.as_bytes())?, 7);
     Ok(())
 }
 
