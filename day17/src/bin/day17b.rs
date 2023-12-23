@@ -8,9 +8,8 @@ fn process(size: u16, bufin: impl BufRead) -> Result<u32> {
     let input = parser::parse(bufin)?;
     let gheat = Grid::try_from(input)?;
     solve(size, gheat, |st, dir| {
-        true
-            // Can't go back:
-            && st.lastdir != Some(-dir)
+        // Can't go back:
+        st.lastdir != Some(-dir)
             // Must go at least 4 spaces:
             && (st.lastdir.is_none() || st.lastdir == Some(dir) || st.dircount >= 4)
             // And not more than 10:

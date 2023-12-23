@@ -99,12 +99,8 @@ pub fn calc_distances(inc: i64, input: Vec<Vec<Cell>>) -> Result<i64> {
             for x in 0..=xmax {
                 if !xs.contains(&x) {
                     xinc += inc;
-                } else {
-                    if galaxies.contains(&(x, y)) {
-                        let x = x as i64;
-                        let y = y as i64;
-                        galaxies2.push((x + xinc, y + yinc));
-                    }
+                } else if galaxies.contains(&(x, y)) {
+                    galaxies2.push((x + xinc, y + yinc));
                 }
             }
         }

@@ -21,7 +21,9 @@ fn process(bufin: impl BufRead) -> Result<u32> {
         }
         // Check adjacencies, with diagonals:
         for dir in Dir::iter::<true>() {
-            let Ok(qa_adj) = qa_symbol + dir else { continue };
+            let Ok(qa_adj) = qa_symbol + dir else {
+                continue;
+            };
             let Ok(number) = grid_get_number(&mut grid, qa_adj) else {
                 continue;
             };
