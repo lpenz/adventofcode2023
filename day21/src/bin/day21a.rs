@@ -16,7 +16,7 @@ pub type GridDebug = sqrid::grid_create!(Sqrid, char);
 
 pub type Steps = i32;
 
-fn bfs(
+fn dfs(
     size: u16,
     grid: &Grid,
     pos: Pos,
@@ -40,7 +40,7 @@ fn bfs(
         if grid[newpos] == Cell::Rock {
             continue;
         }
-        bfs(size, grid, newpos, visited, end, stepsleft - 1);
+        dfs(size, grid, newpos, visited, end, stepsleft - 1);
     }
     visited.insert((pos, stepsleft));
 }
@@ -51,7 +51,7 @@ fn process(size: u16, steps: Steps, bufin: impl BufRead) -> Result<usize> {
     let start = Pos::iter().find(|p| grid[p] == Cell::Start).unwrap();
     let mut visited = HashSet::<(Pos, Steps)>::new();
     let mut end = HashSet::<Pos>::new();
-    bfs(size, &grid, start, &mut visited, &mut end, steps);
+    dfs(size, &grid, start, &mut visited, &mut end, steps);
     Ok(end.len())
 }
 
