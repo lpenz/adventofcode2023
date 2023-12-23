@@ -5,12 +5,12 @@
 use day23::*;
 
 fn process(size: u16, bufin: impl BufRead) -> Result<usize> {
-    solve::<true>(size, bufin)
+    solve::<false>(size, bufin)
 }
 
 #[test]
 fn test() -> Result<()> {
-    assert_eq!(process(23, EXAMPLE.as_bytes())?, 94);
+    assert_eq!(process(23, EXAMPLE.as_bytes())?, 154);
     Ok(())
 }
 
