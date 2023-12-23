@@ -46,12 +46,12 @@ impl fmt::Display for Cell {
     }
 }
 
-pub use sqrid::Qr;
+pub use sqrid::Dir;
 pub type Sqrid = sqrid::sqrid_create!(140, 140, true);
-pub type Qa = sqrid::qa_create!(Sqrid);
+pub type Pos = sqrid::pos_create!(Sqrid);
 pub type Grid = sqrid::grid_create!(Sqrid, Cell);
 
-pub fn grid_get_number(grid: &mut Grid, qa_digit: Qa) -> Result<u32> {
+pub fn grid_get_number(grid: &mut Grid, qa_digit: Pos) -> Result<u32> {
     if !matches!(grid[qa_digit], Cell::Digit(_)) {
         return Err(eyre!(
             "cell {:?} with {} doesn't have a digit",
@@ -60,23 +60,23 @@ pub fn grid_get_number(grid: &mut Grid, qa_digit: Qa) -> Result<u32> {
         ));
     }
     // Found a digit, go left:
-    let qa_start = std::iter::successors(Some(qa_digit), |qa| {
-        (*qa + Qr::W)
+    let qa_start = std::iter::successors(Some(qa_digit), |pos| {
+        (*pos + Dir::W)
             .ok()
-            .filter(|qa| matches!(grid[qa], Cell::Digit(_)))
+            .filter(|pos| matches!(grid[pos], Cell::Digit(_)))
     })
     .last()
     .ok_or_else(|| eyre!("could not find first digit from {:?}", qa_digit))?;
     // We are at the start of the number, pick up the digits
-    let number_str = Qa::iter_range(qa_start, Qa::BOTTOM_RIGHT)
-        .map_while(|qa| grid[qa].digit().ok())
+    let number_str = Pos::iter_range(qa_start, Pos::BOTTOM_RIGHT)
+        .map_while(|pos| grid[pos].digit().ok())
         .collect::<String>();
     // Empty the used cells:
-    for qa in Qa::iter_range(qa_start, Qa::BOTTOM_RIGHT) {
-        if grid[qa].digit().is_err() {
+    for pos in Pos::iter_range(qa_start, Pos::BOTTOM_RIGHT) {
+        if grid[pos].digit().is_err() {
             break;
         }
-        grid[qa] = Cell::Empty;
+        grid[pos] = Cell::Empty;
     }
     number_str
         .parse::<u32>()

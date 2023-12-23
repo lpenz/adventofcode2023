@@ -60,25 +60,25 @@ impl Cell {
     }
 }
 
-pub use sqrid::Qr;
+pub use sqrid::Dir;
 pub type Sqrid = sqrid::sqrid_create!(140, 140, false);
-pub type Qa = sqrid::qa_create!(Sqrid);
+pub type Pos = sqrid::pos_create!(Sqrid);
 pub type Grid = sqrid::grid_create!(Sqrid, Cell);
 
-pub fn next_qr(grid: &Grid, qa: Qa, qr: Qr) -> Option<Qr> {
-    match (grid[qa], qr) {
-        (Cell::NS, Qr::N) => Some(Qr::N),
-        (Cell::NS, Qr::S) => Some(Qr::S),
-        (Cell::EW, Qr::E) => Some(Qr::E),
-        (Cell::EW, Qr::W) => Some(Qr::W),
-        (Cell::NE, Qr::W) => Some(Qr::N),
-        (Cell::NE, Qr::S) => Some(Qr::E),
-        (Cell::NW, Qr::E) => Some(Qr::N),
-        (Cell::NW, Qr::S) => Some(Qr::W),
-        (Cell::SW, Qr::E) => Some(Qr::S),
-        (Cell::SW, Qr::N) => Some(Qr::W),
-        (Cell::SE, Qr::W) => Some(Qr::S),
-        (Cell::SE, Qr::N) => Some(Qr::E),
+pub fn next_qr(grid: &Grid, pos: Pos, dir: Dir) -> Option<Dir> {
+    match (grid[pos], dir) {
+        (Cell::NS, Dir::N) => Some(Dir::N),
+        (Cell::NS, Dir::S) => Some(Dir::S),
+        (Cell::EW, Dir::E) => Some(Dir::E),
+        (Cell::EW, Dir::W) => Some(Dir::W),
+        (Cell::NE, Dir::W) => Some(Dir::N),
+        (Cell::NE, Dir::S) => Some(Dir::E),
+        (Cell::NW, Dir::E) => Some(Dir::N),
+        (Cell::NW, Dir::S) => Some(Dir::W),
+        (Cell::SW, Dir::E) => Some(Dir::S),
+        (Cell::SW, Dir::N) => Some(Dir::W),
+        (Cell::SE, Dir::W) => Some(Dir::S),
+        (Cell::SE, Dir::N) => Some(Dir::E),
         _ => None,
     }
 }

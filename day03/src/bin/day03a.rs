@@ -9,19 +9,19 @@ fn process(bufin: impl BufRead) -> Result<u32> {
     let mut grid = Grid::default();
     for (y, line) in input.into_iter().enumerate() {
         for (x, cell) in line.into_iter().enumerate() {
-            let qa = Qa::try_from((x as u16, y as u16))?;
-            grid[qa] = cell;
+            let pos = Pos::try_from((x as u16, y as u16))?;
+            grid[pos] = cell;
         }
     }
     let mut numbers = vec![];
     // Look for symbols:
-    for qa_symbol in Qa::iter() {
+    for qa_symbol in Pos::iter() {
         if !matches!(grid[qa_symbol], Cell::Symbol(_)) {
             continue;
         }
         // Check adjacencies, with diagonals:
-        for qr in Qr::iter::<true>() {
-            let Ok(qa_adj) = qa_symbol + qr else { continue };
+        for dir in Dir::iter::<true>() {
+            let Ok(qa_adj) = qa_symbol + dir else { continue };
             let Ok(number) = grid_get_number(&mut grid, qa_adj) else {
                 continue;
             };

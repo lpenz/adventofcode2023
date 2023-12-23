@@ -38,9 +38,9 @@ impl TryFrom<char> for Cell {
     }
 }
 
-pub use sqrid::Qr;
+pub use sqrid::Dir;
 pub type Sqrid = sqrid::sqrid_create!(100, 100, false);
-pub type Qa = sqrid::qa_create!(Sqrid);
+pub type Pos = sqrid::pos_create!(Sqrid);
 pub type Grid = sqrid::grid_create!(Sqrid, Cell);
 
 impl fmt::Display for Cell {
@@ -82,38 +82,38 @@ fn test() -> Result<()> {
     Ok(())
 }
 
-pub fn tilt(size: usize, mut grid: Grid, qr: Qr) -> Grid {
-    let qas = if qr == Qr::N || qr == Qr::W {
-        Qa::iter().collect::<Vec<_>>()
+pub fn tilt(size: usize, mut grid: Grid, dir: Dir) -> Grid {
+    let qas = if dir == Dir::N || dir == Dir::W {
+        Pos::iter().collect::<Vec<_>>()
     } else {
-        Qa::iter().rev().collect::<Vec<_>>()
+        Pos::iter().rev().collect::<Vec<_>>()
     };
     for qa_rock in qas {
         if grid[qa_rock] != Cell::Rock {
             continue;
         }
-        let mut qa = qa_rock;
-        while let Ok(qa_new) = qa + qr {
+        let mut pos = qa_rock;
+        while let Ok(qa_new) = pos + dir {
             let t = qa_new.tuple();
             let t = (t.0 as usize, t.1 as usize);
             if t.0 >= size || t.1 >= size || grid[qa_new] != Cell::Empty {
                 break;
             }
-            qa = qa_new;
+            pos = qa_new;
         }
-        if qa != qa_rock {
+        if pos != qa_rock {
             grid[qa_rock] = Cell::Empty;
-            grid[qa] = Cell::Rock;
+            grid[pos] = Cell::Rock;
         }
     }
     grid
 }
 
 pub fn grid_load(size: usize, grid: &Grid) -> usize {
-    Qa::iter()
-        .map(|qa| {
-            if grid[qa] == Cell::Rock {
-                let t = qa.tuple();
+    Pos::iter()
+        .map(|pos| {
+            if grid[pos] == Cell::Rock {
+                let t = pos.tuple();
                 size - t.1 as usize
             } else {
                 0

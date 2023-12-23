@@ -7,7 +7,7 @@ use day14::*;
 fn process(size: usize, bufin: impl BufRead) -> Result<usize> {
     let input = parser::parse(bufin)?;
     let mut grid = Grid::try_from(input)?;
-    grid = tilt(size, grid, Qr::N);
+    grid = tilt(size, grid, Dir::N);
     Ok(grid_load(size, &grid))
 }
 

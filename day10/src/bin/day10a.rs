@@ -7,28 +7,28 @@ use day10::*;
 fn process(bufin: impl BufRead) -> Result<usize> {
     let input = parser::parse(bufin)?;
     let mut grid = Grid::default();
-    let mut start = Qa::default();
+    let mut start = Pos::default();
     for (y, line) in input.into_iter().enumerate() {
         for (x, cell) in line.into_iter().enumerate() {
-            let qa = Qa::try_from((x as u16, y as u16))?;
-            grid[qa] = cell;
+            let pos = Pos::try_from((x as u16, y as u16))?;
+            grid[pos] = cell;
             if cell == Cell::Start {
-                start = qa;
+                start = pos;
             }
         }
     }
-    for qr0 in [Qr::N, Qr::E, Qr::S, Qr::W] {
+    for qr0 in [Dir::N, Dir::E, Dir::S, Dir::W] {
         let mut steps = 0;
-        let mut qr = qr0;
-        let mut qa = start;
-        while let Ok(next_qa) = qa + qr {
-            qa = next_qa;
+        let mut dir = qr0;
+        let mut pos = start;
+        while let Ok(next_qa) = pos + dir {
+            pos = next_qa;
             steps += 1;
-            if qa == start {
+            if pos == start {
                 return Ok(steps / 2);
             }
-            if let Some(next_qr) = next_qr(&grid, qa, qr) {
-                qr = next_qr;
+            if let Some(next_qr) = next_qr(&grid, pos, dir) {
+                dir = next_qr;
             } else {
                 break;
             }

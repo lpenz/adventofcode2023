@@ -6,23 +6,12 @@ use day14::*;
 
 use std::collections::HashMap;
 
-pub use sqrid::Qr;
+pub use sqrid::Dir;
 pub type Sqrid = sqrid::sqrid_create!(100, 100, false);
-pub type Qa = sqrid::qa_create!(Sqrid);
+pub type Pos = sqrid::pos_create!(Sqrid);
 pub type Grid = sqrid::grid_create!(Sqrid, Cell);
 
-pub type SqridD = sqrid::sqrid_create!(10, 10, false);
-pub type QaD = sqrid::qa_create!(SqridD);
-pub type GridD = sqrid::grid_create!(SqridD, Cell);
-
 const CYCLES: u64 = 1000000000;
-
-fn _grid_display(grid: &Grid) {
-    let grid_d = QaD::iter()
-        .map(|qa| grid[Qa::try_from(qa.tuple()).unwrap()])
-        .collect::<GridD>();
-    eprintln!("{}", grid_d);
-}
 
 fn process(size: usize, bufin: impl BufRead) -> Result<usize> {
     let input = parser::parse(bufin)?;
@@ -30,8 +19,8 @@ fn process(size: usize, bufin: impl BufRead) -> Result<usize> {
     let mut cache = HashMap::<Grid, u64>::default();
     let mut icycle = 0;
     while icycle < CYCLES {
-        for qr in [Qr::N, Qr::W, Qr::S, Qr::E] {
-            grid = tilt(size, grid, qr);
+        for dir in [Dir::N, Dir::W, Dir::S, Dir::E] {
+            grid = tilt(size, grid, dir);
         }
         if icycle < CYCLES / 2 {
             if let Some(first) = cache.get(&grid) {

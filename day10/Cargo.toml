@@ -8,4 +8,4 @@ aoc = { path = "../aoc" }
 color-eyre = "0.6.2"
 itertools = "0.12.0"
 nom = "7.1.3"
-sqrid = "0.0.18"
+sqrid = "0.0.24"
