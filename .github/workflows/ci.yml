@@ -40,6 +40,7 @@ jobs:
             - day21
             - day22
             - day23
+            - day24
             # end
     if: github.ref == 'refs/heads/main'
     needs: [ omnilint, rust ]
