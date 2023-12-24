@@ -11,7 +11,7 @@ pub const EXAMPLE: &str = "19, 13, 30 @ -2,  1, -2
 20, 19, 15 @  1, -5, -3
 ";
 
-pub type Xyz = (f64, f64, f64);
+pub type Xyz = (i64, i64, i64);
 pub type Stone = (Xyz, Xyz, usize);
 
 pub mod parser {
@@ -27,7 +27,7 @@ pub mod parser {
         let (input, _) = tag(",")(input)?;
         let (input, _) = character::space1(input)?;
         let (input, z) = character::i64(input)?;
-        Ok((input, (x as f64, y as f64, z as f64)))
+        Ok((input, (x, y, z)))
     }
 
     fn line(input: &str) -> IResult<&str, Stone> {

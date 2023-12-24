@@ -4,7 +4,10 @@
 
 use day24::*;
 
-fn intercept(v: Stone, u: Stone) -> Option<Xyz> {
+type XyzF = (f64, f64, f64);
+type StoneF = (XyzF, XyzF, usize);
+
+fn intercept(v: StoneF, u: StoneF) -> Option<XyzF> {
     let (pos_v, vel_v, _) = v;
     let (pos_u, vel_u, _) = u;
     let a = vel_v.1 / vel_v.0;
@@ -27,8 +30,18 @@ fn intercept(v: Stone, u: Stone) -> Option<Xyz> {
     Some((x, y, 0_f64))
 }
 
-fn process(tl: Xyz, br: Xyz, bufin: impl BufRead) -> Result<usize> {
+fn process(tl: XyzF, br: XyzF, bufin: impl BufRead) -> Result<usize> {
     let stones = parser::parse(bufin)?;
+    let stones = stones
+        .into_iter()
+        .map(|((x1, y1, z1), (x2, y2, z2), i)| {
+            (
+                (x1 as f64, y1 as f64, z1 as f64),
+                (x2 as f64, y2 as f64, z2 as f64),
+                i,
+            )
+        })
+        .collect::<Vec<StoneF>>();
     Ok((0..stones.len() - 1)
         .flat_map(|i| {
             let stones = &stones;

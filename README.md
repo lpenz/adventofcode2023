@@ -1,4 +1,4 @@
-![AoC](https://img.shields.io/badge/AoC%20%E2%AD%90-46-yellow)
+![AoC](https://img.shields.io/badge/AoC%20%E2%AD%90-48-yellow)
 [![CI](https://github.com/lpenz/adventofcode2023/workflows/CI/badge.svg)](https://github.com/lpenz/adventofcode2023/actions)
 [![coveralls](https://coveralls.io/repos/github/lpenz/adventofcode2023/badge.svg?branch=main)](https://coveralls.io/github/lpenz/adventofcode2023?branch=main)
 
@@ -15,9 +15,11 @@ Some interesting things that happened on specific days:
   (which was not necessary).
 - Day 20b: had to look at the graph to figure out the "counter result
   modules".
+- Day 24b: used [z3] in rust.
 
 
 <table><tr>
 <td><a href="https://github.com/lpenz/adventofcode2022">:arrow_left: 2022</td>
 </tr></table>
 
+[z3]: https://docs.rs/z3/latest/z3/
