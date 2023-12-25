@@ -10,6 +10,7 @@ jobs:
   rust:
     uses: lpenz/ghworkflow-rust/.github/workflows/rust.yml@v0.19.0
     with:
+      dependencies_debian: 'libclang-dev libz3-dev'
       coveralls: true
       publish_cratesio: false
       publish_github_release: false
@@ -41,6 +42,7 @@ jobs:
             - day22
             - day23
             - day24
+            - day25
             # end
     if: github.ref == 'refs/heads/main'
     needs: [ omnilint, rust ]
