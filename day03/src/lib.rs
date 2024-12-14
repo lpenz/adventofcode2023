@@ -46,6 +46,7 @@ impl fmt::Display for Cell {
     }
 }
 
+use sqrid::postrait::PosT;
 pub use sqrid::Dir;
 pub type Sqrid = sqrid::sqrid_create!(140, 140, true);
 pub type Pos = sqrid::pos_create!(Sqrid);

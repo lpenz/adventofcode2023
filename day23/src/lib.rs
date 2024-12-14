@@ -8,6 +8,8 @@ use std::collections::HashMap;
 use std::collections::HashSet;
 use std::fmt;
 
+use sqrid::postrait::PosT;
+
 pub const EXAMPLE: &str = "#.#####################
 #.......#########...###
 #######.#########.#.###

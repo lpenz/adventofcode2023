@@ -6,7 +6,7 @@ use day09::*;
 
 use rayon::prelude::*;
 
-fn calc_next(nums: &Vec<i64>) -> i64 {
+fn calc_next(nums: &[i64]) -> i64 {
     let mut lastsum = nums[nums.len() - 1];
     let mut currdiff = diffs(nums);
     while !currdiff.par_iter().all(|n| n == &0) {
@@ -18,7 +18,7 @@ fn calc_next(nums: &Vec<i64>) -> i64 {
 
 fn process(bufin: impl BufRead) -> Result<i64> {
     let input = parser::parse(bufin)?;
-    Ok(input.par_iter().map(calc_next).sum())
+    Ok(input.par_iter().map(|v| calc_next(v)).sum())
 }
 
 #[test]

@@ -4,6 +4,8 @@
 
 pub use aoc::*;
 
+use sqrid::postrait::PosT;
+
 use std::fmt;
 
 pub const EXAMPLE: &str = "O....#....

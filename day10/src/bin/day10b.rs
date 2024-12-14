@@ -4,6 +4,8 @@
 
 use day10::*;
 
+use sqrid::postrait::PosT;
+
 use itertools::Itertools;
 
 #[derive(Debug, Default, Clone, Copy)]

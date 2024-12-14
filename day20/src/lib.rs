@@ -164,7 +164,7 @@ pub fn sts_init(modules: &BTreeMap<Mname, Module>) -> BTreeMap<Mname, ModState> 
     for src_mname in modules.keys() {
         let src_module = &modules[src_mname];
         for dst_mname in &src_module.dsts {
-            let dst_module = &modules[&dst_mname];
+            let dst_module = &modules[dst_mname];
             if dst_module.mtype == Mtype::Conjunct {
                 let conj = sts.get_mut(dst_mname).unwrap();
                 conj.memory.insert(*src_mname, false);

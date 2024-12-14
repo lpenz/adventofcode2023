@@ -9,6 +9,8 @@ use std::collections::BinaryHeap;
 use std::collections::HashMap;
 use std::collections::HashSet;
 
+use sqrid::postrait::PosT;
+
 pub const EXAMPLE: &str = "2413432311323
 3215453535623
 3255245654254
@@ -70,7 +72,7 @@ pub fn path_debug(_size: u16, gheat: &Grid, path: &[Dir]) {
     let mut gdir = Griddir::default();
     for dir in path {
         gdir[pos] = dir.name_utf8().to_string();
-        pos = (pos + dir).unwrap();
+        pos = (pos + *dir).unwrap();
         heat += gheat[pos];
         gheatacum[pos] = heat;
     }

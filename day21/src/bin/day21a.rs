@@ -6,6 +6,8 @@ use day21::*;
 
 use std::collections::HashSet;
 
+use sqrid::postrait::PosT;
+
 pub use sqrid::Dir;
 pub type Sqrid = sqrid::sqrid_create!(131, 131, false);
 // pub type Sqrid = sqrid::sqrid_create!(11, 11, false);

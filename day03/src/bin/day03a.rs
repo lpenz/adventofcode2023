@@ -4,6 +4,8 @@
 
 use day03::*;
 
+use sqrid::postrait::PosT;
+
 fn process(bufin: impl BufRead) -> Result<u32> {
     let input = parser::parse(bufin)?;
     let mut grid = Grid::default();

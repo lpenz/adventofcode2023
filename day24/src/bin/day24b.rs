@@ -6,7 +6,6 @@ use day24::*;
 
 use std::ops::Add;
 use std::ops::Mul;
-use z3;
 use z3::ast::Ast;
 use z3::{ast, Config, Context, Solver};
 
