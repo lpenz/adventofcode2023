@@ -22,6 +22,7 @@ Some interesting things that happened on specific days:
 
 <table><tr>
 <td><a href="https://github.com/lpenz/adventofcode2022">:arrow_left: 2022</td>
+<td><a href="https://github.com/lpenz/adventofcode2024">2024 :arrow_right:</td>
 </tr></table>
 
 [z3]: https://docs.rs/z3/latest/z3/
